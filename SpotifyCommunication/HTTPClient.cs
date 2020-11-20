@@ -22,13 +22,10 @@ namespace SpotifyCommunication
             var responseString = await response.Content.ReadAsStringAsync();
             return responseString;
         }
-        static T Method<T>()
-        {
-            return (T)Convert.ChangeType("", typeof(T));
-        }
+    
         protected async Task<T> SendGetRequestAsync<T>(bool AuthorizationReqierd, string ApiFunction, string AccessToken = null, string Content = null)
         {
-            Method<string>();
+            
             string Url = $"{_ApiEndPoint}{ApiFunction}";
             if (!string.IsNullOrEmpty(Content))
                 Url = $"{Url}{Content}";
