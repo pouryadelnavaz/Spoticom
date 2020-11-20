@@ -1,0 +1,371 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var user = (SpotifyCommunication.Models.SpotifyUserObject)ViewBag.User;
+    var images = (List<SpotifyCommunication.Models.Image>)user.images;
+    var url = images.FirstOrDefault()?.url;
+}
+<script src="~/Scripts/angular.min.js"></script>
+<script src="~/Content/ng-App.js"></script>
+<link href="~/Content/css/SearchBox.css" rel="stylesheet" />
+<div class="row cb-slideshow-text-container">
+    <div class="col-md-12 my-window">
+        <div id="main" class="my-app" ng-app="Spoticom" ng-controller="Ctrl1">
+            <div id="N1">
+                @if (url != null)
+                {
+                    <div class="user-image-window">
+                        <img class="user-image" src="@url">
+                    </div>
+                }
+
+                <div class="user-desc-window">
+                    <h6 class="user-desc-1">Hello @user.display_name!</h6><br />
+                </div>
+                <div style="display:flex">
+                    <h6 class="user-desc-2">We can help you to find a perfect song by your taste and mood!</h6>
+                </div>
+                <div style="display:flex">
+                    <h6 class="user-desc-2 margintopmin">To continue press start</h6>
+                </div>
+                <div class="start-btn-window">
+                    <div class="SpotifyGreenButton margin-auto-cent" ng-click="start()">
+                        <span class="margin-auto-cent"><span><img class="innter-spotify-btn-left-icon" src="~/Content/img/start.png" /></span>Start</span>
+                    </div>
+                </div>
+
+            </div>
+            <div id="N2" class="hideIt">
+                <div class="flextop20">
+                    <div class="margin-auto-cent">
+                        <h6 class="page-title">Who is your favorite artists?</h6>
+                    </div>
+                </div>
+                <div class="flextop15">
+                    <div class="margin-auto-cent">
+                        <h6 class="page-desc">Add up to 2 artists to your favorite list</h6>
+                    </div>
+                </div>
+                <div style="display:flex">
+                    <div style="margin:auto;">
+                        <div class="search">
+                            <input id="SearchInput" type="search" ng-model="SearchText" class="search-box" style="font-size: 20px;font-weight: 100;" />
+                            <span class="search-button" ng-click="SearchArtist()">
+                                <span class="search-icon"></span>
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+                <div>
+                    <hr ng-show="SuggestedArtists.length != 0" />
+                    <div class="page-desc-2" ng-show="SelectedArtists.length != 0">Suggested Artists based on your last selection:</div>
+                    <div class="window-wrap">
+                        <div ng-repeat="x in SuggestedArtists" class="MarginSpace5">
+                            <div class="SpotifyGrayButton pointer-auto" ng-click="AddSuggestedArtist(x)">
+                                <span class="flextop5">+ {{x.name}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <hr ng-show="SelectedArtists.length != 0" />
+                    <div class="page-desc-2" ng-show="SelectedArtists.length != 0">Your Favorite List:</div>
+                    <div class="window-wrap">
+                        <div ng-repeat="x in SelectedArtists" class="MarginSpace5">
+                            <div class="SpotifyGrayButton spotify-btn-2">
+                                <span class="margin-auto-cent" ng-click="removeArtist(x)">{{x.name}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="window-wrap-flex">
+                        <div class="SpotifyGreenButton margin-auto-cent" ng-click="StepGenere()" ng-show="SelectedArtists.length != 0">
+                            <span class="margin-auto-cent ">Next<span><img class="innter-spotify-btn" src="~/Content/img/next.png"  /></span></span>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+            </div>
+            <div id="N3" class="hideIt">
+                <div class="flextop35">
+                    <div class="margin-auto-cent">
+                        <h6 class="page-title">What is your favorite genre?</h6>
+                    </div>
+                </div>
+                <div class="flextop15">
+                    <div class="margin-auto-cent">
+                        <h6 class="page-desc">Here are some suggestions according to your favorite artists</h6>
+                    </div>
+                </div>
+                <div class="flextop5">
+                    <div class="margin-auto-cent">
+                        <h6 class="page-desc">Select your favorite genre</h6>
+                    </div>
+                </div>
+                <div class="window-wrap">
+                    <div ng-repeat="x in SuggestedGenere" class="MarginSpace5">
+                        <div class="SpotifyGrayButton margin-auto-cent" ng-click="AddGenre(x)">
+                            <span class="margin-auto-cent">+ {{x}}</span>
+                        </div>
+                    </div>
+                </div>
+                <hr ng-show="SelectedGenere.length != 0" />
+                <div class="window-wrap" ng-show="SelectedGenere.length != 0">
+                    <div ng-repeat="x in SelectedGenere" class="MarginSpace5">
+                        <div class="SpotifyGrayButton spotify-btn-3">
+                            <span class="margin-auto-cent">{{x}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="N4" class="hideIt">
+                <div class="flextop35">
+                    <div class="margin-auto-cent">
+                        <h6 class="page-title">Please select your country</h6>
+                    </div>
+                </div>
+                <div class="flextop15">
+                    <div class="margin-auto-cent">
+                        <h6 class="page-desc">To find available music in your country</h6>
+                    </div>
+                </div>
+                <div class="flextop20">
+                    <div class="margin-auto-cent">
+                        <select class="select-spotify" id="markets" ng-model="SelectedMarket" ng-change="MarketSelected(SelectedMarket)">
+                            <option value="">Please Select Country</option>
+                            <option ng-repeat="x in Markets" value="{{x.alpha2}}">{{x.name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="Loading-songsc" class="loading-market">
+                    <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+                </div>
+                <div class="window-spotify-btn">
+                    <div class="SpotifyGreenButton margin-auto-cent" ng-click="StepTrack()">
+                        <span class="margin-auto-cent">Next<span><img class="innter-spotify-btn" src="~/Content/img/next.png" /></span></span>
+                    </div>
+                </div>
+            </div>
+            <div id="N5" class="hideIt">
+                <div class="flextop35">
+                    <div class="margin-auto-cent">
+                        <h6 class="page-title">What are your most favorite tracks in this list?</h6>
+                    </div>
+                </div>
+                <div class="flextop15">
+                    <div class="margin-auto-cent">
+                        <h6 class="page-desc">These are the top songs based on your favorite artists</h6>
+                    </div>
+                </div>
+                <div class="flextop15">
+                    <div class="margin-auto-cent">
+                        <h6 class="page-desc">Select up to 2 songs</h6>
+                    </div>
+                </div>
+                <div class="flextop15">
+                    <div class="margin-auto-cent">
+                        <h6 class="page-desc">Please wait for the players to load</h6>
+                    </div>
+                </div>
+                <div class="wrapper tasteList" ng-repeat="x in TasteList" >
+                    <div class="first" style="width:145px">
+                        <input class="check-song" type="checkbox" ng-model="song" ng-change="SongChanged(x)" />
+                    </div>
+                    <div class="second" style="margin-left:175px;">
+                        <iframe id="{{x.id}}" onload="onMyFrameLoad(this)" src="{{x.SpotifyURL | trustThisUrl}}" width="350" style="border-radius:25px;display:none" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+                        <div id="Loading-{{x.id}}" style="margin:auto;">
+                            <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="window-spotify-btn">
+                    <div class="SpotifyGreenButton margin-auto-cent" ng-click="GoToAdvance()">
+                        <span class="margin-auto-cent">Next<span><img class="innter-spotify-btn" src="~/Content/img/next.png" /></span></span>
+                    </div>
+                </div>
+            </div>
+            <div id="N7" style="display:none;">
+                <div class="flextop35">
+                    <div class="margin-auto-cent">
+                        <h6 class="page-title">And Here is your playlist :)</h6>
+                    </div>
+                </div>
+                <div class="flextop15">
+                    <div class="margin-auto-cent">
+                        <h6 class="page-desc">Please wait for the players to load</h6>
+                    </div>
+                </div>
+                <div class="window-spotify-btn">
+                    <div class="SpotifyGreenButton margin-auto-cent" ng-click="BackToSetting()">
+                        <span class="margin-auto-cent">Set Audio Features<span><img src="~/Content/img/back.png" class="innter-spotify-btn" /></span></span>
+                    </div>
+                </div>
+                <div style="padding-left:77px;">
+                    <div ng-repeat="x in Recoms">
+                        <iframe id="{{x.Id}}" onload="onMyFrameLoad(this)" src="{{x.EmbedUrl | trustThisUrl}}" width="550" style="display:none" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+                        <div id="Loading-{{x.Id}}" style="margin:auto;padding-left:37%">
+                            <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div id="Advance" style="display:none;">
+                <div class="flextop35">
+                    <div class="margin-auto-cent">
+                        <h6 class="page-title">Let's find out your mood!</h6>
+                    </div>
+                </div>
+                <div class="flextop15">
+                    <div class="margin-auto-cent">
+                        <h6 class="page-desc">Please arrange these parameters</h6>
+                    </div>
+                </div>
+                <div class="flextop15">
+                    <div class="margin-auto-cent">
+                        <h6 style="color:red;font-size:12px;">Note:  By setting these parameters, you will receive specefic tracks based on these parameters.</h6>
+                    </div>
+                </div>
+               
+                <div class="window-spotify-btn">
+                    <div class="SpotifyGreenButton margin-auto-cent" ng-click="Help()">
+                        <span class="margin-auto-cent">Help<span><img src="~/Content/img/help.png" class="innter-spotify-btn" /></span></span>
+                    </div>
+                </div>
+                <div class="window-slider">
+                    <div class="margin-bottom-slider">
+                        <label class="slider-label">Danceablity</label><br />
+                        <b class="slider-title">Min</b> <input id="Dancablity" type="text" class="span2 mySlider" value="" data-slider-min="0.0" data-slider-max="1.0" data-slider-step="0.001" data-slider-value="[0.0,1.0]" /> <b class="slider-title-right">Max</b>
+                    </div>
+                    <hr />
+                    <div class="margin-bottom-slider">
+                        <label class="slider-label">Acousticness</label><br />
+                        <b class="slider-title">Min</b> <input id="Acousticness" type="text" class="span2 mySlider" value="" data-slider-min="0.0" data-slider-max="1.0" data-slider-step="0.001" data-slider-value="[0.0,1.0]" /> <b class="slider-title-right">Max</b>
+                    </div>
+                    <hr />
+                    <div class="margin-bottom-slider">
+                        <label class="slider-label">Energy</label><br />
+                        <b class="slider-title">Min</b> <input id="Energy" type="text" class="span2 mySlider" value="" data-slider-min="0.0" data-slider-max="1.0" data-slider-step="0.001" data-slider-value="[0.0,1.0]" /> <b class="slider-title-right">Max</b>
+                    </div>
+                    <hr />
+                    <div class="margin-bottom-slider">
+                        <label class="slider-label">Instrumentalness</label><br />
+                        <b class="slider-title">Min</b> <input id="Instrumentalness" type="text" class="span2 mySlider" value="" data-slider-min="0.0" data-slider-max="1.0" data-slider-step="0.001" data-slider-value="[0.0,1.0]" /> <b class="slider-title-right">Max</b>
+                    </div>
+                    <hr />
+                    <div class="margin-bottom-slider flextop20" >
+                        <div id="Loading-Recom" style="margin:auto;display:none">
+                            <div style="color:black;font-size:14px;">Please Wait. It will take a few moments</div>
+                            <div class="lds-ellipsis" style="margin-left:33%"><div></div><div></div><div></div><div></div></div>
+                        </div>
+                    </div>
+                    
+                    <div class="window-spotify-btn">
+                        <div class="SpotifyGreenButton" style="margin:auto;width:300px;" ng-click="StepDone()">
+                            <span class="margin-auto-cent">Get Recommendation<span><img src="~/Content/img/next.png" class="innter-spotify-btn" /></span></span>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <div class="modal fade" id="SearchModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;font-size: 21px;">Search result for: {{SearchArtist}}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" style="display:flex">
+                            <div id="Search-Loading" style="margin:auto;" ng-show="SearchPending">
+                                <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+                            </div>
+                            <div id="Content-Search" ng-show="!SearchPending">
+                                <div ng-repeat="x in ResultSearch">
+                                    <div class="wrapper" style="margin-bottom:25px;">
+                                        <div class="first">
+                                            <img style="height:65px;" src="{{x.images[0].url}}" />
+                                        </div>
+                                        <div class="second">
+                                            <a style="font-size:18px; color:black;text-decoration:none">{{x.name}}</a>
+                                            <label style="color: green;font-size: 13px;">{{x.followers.total}} Followers</label>
+                                            <div class="SpotifyGreenButton" style="height: 25px; width: 100px; font-size: 14px; color: white !important;" ng-click="AddArtistToList(x)">
+                                                <span class="margin-auto-cent">+ Add</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr style="margin-top:5px;" />
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="Help" tabindex="-1" role="dialog" aria-labelledby="Help" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel" style="color:black;">Help!</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <table class="table" style="color: black;font-size: 15px;">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Key</th>
+                                        <th scope="col">Value Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th>Acousticness</th>
+                                        <td>A confidence measure from 0.0 to 1.0 of whether the track is acoustic. 1.0 represents high confidence the track is acoustic.</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Danceability</th>
+                                        <td>Danceability describes how suitable a track is for dancing based on a combination of musical elements including tempo, rhythm stability, beat strength, and overall regularity. A value of 0.0 is least danceable and 1.0 is most danceable.</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Energy</th>
+                                        <td>Energy is a measure from 0.0 to 1.0 and represents a perceptual measure of intensity and activity. Typically, energetic tracks feel fast, loud, and noisy. For example, death metal has high energy, while a Bach prelude scores low on the scale. Perceptual features contributing to this attribute include dynamic range, perceived loudness, timbre, onset rate, and general entropy.</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Instrumentalness</th>
+                                        <td>Predicts whether a track contains no vocals. “Ooh” and “aah” sounds are treated as instrumental in this context. Rap or spoken word tracks are clearly “vocal”. The closer the instrumentalness value is to 1.0, the greater likelihood the track contains no vocal content. Values above 0.5 are intended to represent instrumental tracks, but confidence is higher as the value approaches 1.0.</td>
+                                    </tr>
+                                   
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            @*<button type="button" class="btn btn-primary">Save changes</button>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+           
+        </script>
+        @*<header class="mb-5" style="padding-left:250px;padding-right:250px;">
+
+               <br />
+               <h6>Welcome To the Cloud Nine Music Recemmendation System!</h6>
+            </header>*@
+    </div>
+
+</div>
+

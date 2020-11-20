@@ -1,0 +1,195 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.MarginSpace5{
+    margin:5px;
+}
+.spotify-btn-3 {
+    margin: auto;
+    background-color: #343434
+}
+.hideIt{
+    display:none;
+}
+.page-desc {
+    color: gray;
+    font-size: 12px;
+}
+.innter-spotify-btn {
+    margin-left: 10px;
+    height:27px;
+}
+.innter-spotify-btn-left-icon {
+    margin-right: 10px;
+    height: 27px;
+}
+.pointer-auto {
+    margin: auto;
+    cursor: pointer;
+}
+.spotify-btn-2 {
+    margin: auto;
+    cursor: pointer;
+    background-color: #343434
+}
+.window-wrap {
+    display: flex;
+    margin: 20px;
+    flex-flow: wrap;
+}
+.window-wrap-flex {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+}
+.page-desc-2 {
+    margin-left: 26px;
+    color: black;
+    margin-top: 12px;
+    margin-bottom: 8px
+}
+.slider-label {
+    color: black;
+    font-size: 22px;
+    margin-bottom: 0
+}
+.slider-title {
+    color: green;
+    font-size: 19px;
+    font-weight: 100;
+    margin-right: 15px;
+}
+.slider-title-right {
+    color: green;
+    font-size: 19px;
+    font-weight: 100;
+    margin-left: 15px;
+}
+.select-spotify {
+    padding: 7px;
+    font-size: 15px;
+    
+}
+.margin-bottom-slider{
+    margin-bottom:20;
+}
+.window-slider {
+    margin-top: 20px !important;
+    margin-bottom: 25px;
+    margin: 75px;
+}
+.tasteList {
+    margin-bottom: 25px;
+    margin-top: 20px;
+    width: 700px;
+}
+.check-song {
+    zoom: 1.5;
+    margin-top: 20px;
+}
+.window-spotify-btn {
+    margin-top: 20px;
+    margin-bottom: 30px;
+    display: flex;
+}
+.loading-market {
+    margin: auto;
+    display: none;
+    margin-left: 43.7%;
+}
+.flextop20 {
+    display: flex;
+    margin-top: 20px;
+}
+.margin-auto-cent{
+    margin:auto;
+}
+.margintopmin{
+    margin-top:10;
+}
+.startbtn {
+    margin-right: 10px;
+    height: 27px;
+}
+.flextop35 {
+    display: flex;
+    margin-top: 35px;
+}
+.flextop5 {
+    display: flex;
+    margin-top: 5px;
+}
+.flextop15 {
+    display: flex;
+    margin-top: 15px;
+}
+.page-title {
+    color: black;
+    font-size: 26px;
+}
+.my-window {
+    display: flex;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+.user-image-window {
+    padding-top: 40px;
+    padding-left: 37%;
+}
+.user-desc-1 {
+    color: black;
+    margin: auto
+}
+.start-btn-window {
+    margin-top: 50px;
+    margin-bottom: 50px;
+    display: flex;
+}
+.user-desc-2 {
+    color: #5d5d5d;
+    margin: auto;
+    font-size: 14px;
+    margin-top: 30px;
+}
+.user-desc-window {
+    color: black;
+    font-size: 25px;
+    color: black;
+    padding-top: 20px;
+    display: flex
+}
+.user-image {
+    border-radius: 200px;
+    width: 125px;
+}
+.my-app {
+    margin-top: 50px;
+    margin-bottom: 50px;
+    transition: 0.3s;
+    width: 500px;
+    margin: auto;
+    background-color: white;
+    border-radius: 50px;
+    z-index: 9999
+}
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
